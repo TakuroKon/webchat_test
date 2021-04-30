@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -41,9 +41,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({ remotePeerName, setRemotePeerName }) {
+export default function SignIn({ localPeerName, remotePeerName, setRemotePeerName }) {
   const classes = useStyles();
   const label = "相手の名前"
+  const [disabled, setDisabled] = useState(true);
+  const [name, setName] = useState("");
+  const [isComposed, setIsComposed] = useState(false);
+
+  useEffect(() => {
+    const disabled = name === "";
+    setDisabled(disabled);
+  }, [name]);
+
+  const initializeRemotePeer = useCallback(() => {
+    setRemotePeerName(name);
+  }, [name, setRemotePeerName]);
+
+  if (localPeerName === "") return <></>;
+  if (remotePeerName !== "") return <></>;
+
+  if (isComposed);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -60,6 +77,17 @@ export default function SignIn({ remotePeerName, setRemotePeerName }) {
           label={label}
           name="name"
           autoFocus
+          onChange={(e) => { setName(e.target.value) }}
+          onCompositionEnd={() => { setIsComposed(false) }}
+          onCompositionStart={() => { setIsComposed(true); }}
+          value={name}
+          onKeyDown={(e) => {
+            if (isComposed) return;
+            if (e.target.value === "") return;
+            if (e.key !== "Enter") return;
+            initializeRemotePeer();
+            // e.preventDefault();
+          }}
         />
         <form className={classes.form} noValidate>
           <Button
@@ -68,6 +96,11 @@ export default function SignIn({ remotePeerName, setRemotePeerName }) {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={disabled}
+            onClick={(e) => {
+              initializeRemotePeer();
+              e.preventDefault();
+            }}
           >
             決定
           </Button>
