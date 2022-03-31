@@ -55,6 +55,7 @@ export default function SignIn({ localPeerName, remotePeerName, setRemotePeerNam
 
   const initializeRemotePeer = useCallback(() => {
     setRemotePeerName(name);
+    console.log(`remote name: ${name}`)
   }, [name, setRemotePeerName]);
 
   if (localPeerName === "") return <></>;
@@ -86,7 +87,6 @@ export default function SignIn({ localPeerName, remotePeerName, setRemotePeerNam
             if (e.target.value === "") return;
             if (e.key !== "Enter") return;
             initializeRemotePeer();
-            // e.preventDefault();
           }}
         />
         <form className={classes.form} noValidate>

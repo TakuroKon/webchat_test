@@ -55,9 +55,9 @@ export default function SignIn({ localPeerName, setLocalPeerName }) {
 
   const initializeLocalPeer = useCallback(() => {
     setLocalPeerName(name);
+    console.log(`local name: ${name}`)
   }, [name, setLocalPeerName]);
 
-  console.log(name)
   if (localPeerName !== "") return <></>;
 
   return (
@@ -83,7 +83,6 @@ export default function SignIn({ localPeerName, setLocalPeerName }) {
             if (e.target.value === "") return;
             if (e.key !== "Enter") return;
             initializeLocalPeer();
-            // e.preventDefault();
           }}
           value={name}
         />
