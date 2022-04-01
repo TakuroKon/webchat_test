@@ -5,14 +5,19 @@ import RtcClient from '../utils/RtcClient';
 import VideoArea from "./VideoArea";
 
 const App = () => {
-  const [rtcClient, setRtcClient] = useState(new RtcClient());
+  const [rtcClient, _setRtcClient] = useState(new RtcClient());
   const [, forceRender] = useReducer((boolean) => !boolean, false);
+
+  const setRtcClient = (rtcClient) => {
+    _setRtcClient(rtcClient);
+    forceRender();
+  };
 
   return (
     <>
-      <InputFormLocal rtcClient={rtcClient} forceRender={forceRender} />
-      <InputFormRemote rtcClient={rtcClient} forceRender={forceRender} />
-      <VideoArea rtcClient={rtcClient} forceRender={forceRender} />
+      <InputFormLocal rtcClient={rtcClient} setRtcClient={setRtcClient} />
+      <InputFormRemote rtcClient={rtcClient} setRtcClient={setRtcClient} />
+      <VideoArea rtcClient={rtcClient} setRtcClient={setRtcClient} />
     </>
   );
 }
