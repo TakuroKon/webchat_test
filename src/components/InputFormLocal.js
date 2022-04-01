@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({ rtcClient, setRtcClient }) {
+export default function SignIn({ rtcClient }) {
   const classes = useStyles();
   const label = "あなたの名前";
   const [disabled, setDisabled] = useState(true);
@@ -55,9 +55,9 @@ export default function SignIn({ rtcClient, setRtcClient }) {
 
   const initializeLocalPeer = useCallback(() => {
     rtcClient.localPeerName = name;
-    setRtcClient(rtcClient);
+    rtcClient.setRtcClient();
     console.log(`local name: ${name}`)
-  }, [name, rtcClient, setRtcClient]);
+  }, [name, rtcClient]);
 
   if (rtcClient.localPeerName !== "") return <></>;
 
